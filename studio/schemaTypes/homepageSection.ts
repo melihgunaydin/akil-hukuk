@@ -202,7 +202,7 @@ export default defineType({
               type: 'string',
               validation: (Rule) =>
                 Rule.custom((value, context) => {
-                  const sectionType = context.parent?.sectionType
+                  const sectionType = (context.parent as { sectionType?: string } | undefined)?.sectionType
                   if ((sectionType === 'menu' || sectionType === 'contact') && !value) {
                     return 'Bu bölüm için başlık gerekli'
                   }

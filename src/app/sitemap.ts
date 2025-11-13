@@ -1,7 +1,7 @@
 import { client } from "@/lib/sanity.client"
-import { groq } from "next-sanity"
+import groq from "groq"
 
-export const revalidate = 60 * 60 // her saatte bir yeniden oluştur
+export const revalidate = 3600 // her saatte bir yeniden oluştur
 
 export default async function sitemap() {
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://akilhukuk.com"
