@@ -76,6 +76,21 @@ export default defineType({
       hidden: ({ document }) => document?.sectionType === 'footer'
     },
     {
+      name: 'image',
+      title: 'Hero Görseli',
+      type: 'image',
+      options: {
+        hotspot: true
+      },
+      hidden: ({ document }) => document?.sectionType !== 'hero'
+    },
+    {
+      name: 'imageAlt',
+      title: 'Hero Görsel Alt Metni',
+      type: 'string',
+      hidden: ({ document }) => document?.sectionType !== 'hero'
+    },
+    {
       name: 'description',
       title: 'Açıklama',
       type: 'text',

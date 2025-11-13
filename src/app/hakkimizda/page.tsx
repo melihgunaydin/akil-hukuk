@@ -149,10 +149,6 @@ export default async function AboutPage() {
       ? aboutContent.practiceAreas
       : ['Ticaret Hukuku', 'İş Hukuku', 'Gayrimenkul Hukuku', 'Aile Hukuku', 'Ceza Hukuku', 'Vergi Hukuku']
 
-  const bottomNote =
-    aboutContent?.bottomNote ||
-    'Akil Hukuk & Danışmanlık, Samsun merkezli güvenilir hukuki danışmanlık hizmeti sunar.'
-
   const portableBody = aboutContent?.body ?? []
 
   const ctaTitle =
@@ -255,13 +251,6 @@ export default async function AboutPage() {
               <div className="prose max-w-none">
                 <PortableText value={portableBody} />
               </div>
-            </div>
-          )}
-
-          {/* Bottom Note */}
-          {bottomNote && (
-            <div className="mt-12 border border-gray-200 rounded-2xl p-6 text-center text-gray-700">
-              {bottomNote}
             </div>
           )}
 

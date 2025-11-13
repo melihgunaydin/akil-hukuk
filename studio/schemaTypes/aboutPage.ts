@@ -124,12 +124,6 @@ export default defineType({
       of: [{ type: 'string' }],
     },
     {
-      name: 'bottomNote',
-      title: 'Alt Bilgi Metni',
-      type: 'text',
-      rows: 3,
-    },
-    {
       name: 'body',
       title: 'Detay İçerik',
       type: 'array',

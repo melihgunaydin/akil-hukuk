@@ -32,6 +32,8 @@ export interface HomepageSection {
   order?: number
   title?: string
   subtitle?: string
+  imageUrl?: string
+  imageAlt?: string
   description?: string
   ctaText?: string
   ctaSubtext?: string
@@ -77,7 +79,6 @@ export interface AboutPage {
   }>
   practiceAreasTitle?: string
   practiceAreas?: string[]
-  bottomNote?: string
   body?: any[]
   ctaTitle?: string
   ctaDescription?: string
@@ -187,6 +188,8 @@ export const homepageSectionsQuery = groq`*[_type=="homepageSection"] | order(or
   sectionType,
   title,
   subtitle,
+  "imageUrl": image.asset->url,
+  imageAlt,
   description,
   cards[]{
     _key,
@@ -234,7 +237,6 @@ export const aboutPageQuery = groq`*[_type=="aboutPage"][0]{
   },
   practiceAreasTitle,
   practiceAreas,
-  bottomNote,
   body,
   ctaTitle,
   ctaDescription,
