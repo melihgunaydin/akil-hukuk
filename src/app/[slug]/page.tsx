@@ -7,8 +7,8 @@ import type { Metadata } from 'next'
 
 export const revalidate = 60
 
-export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
-  const { slug } = params
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const { slug } = await params
   const page = await client.fetch(pageBySlugQuery, { slug })
   return buildMetadata({
     title: page?.title,
@@ -21,8 +21,8 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   })
 }
 
-export default async function Page({ params }: { params: { slug: string } }) {
-  const { slug } = params
+export default async function Page({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params
   const page = await client.fetch(pageBySlugQuery, { slug })
   if (!page) return notFound()
 

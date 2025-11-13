@@ -33,8 +33,8 @@ const portableTextToPlain = (blocks?: PortableTextBlock[] | null) => {
     .join(" ")
 }
 
-export async function generateMetadata({ params }: { params: { slug: string } }) {
-  const { slug } = params
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params
   const person = await client.fetch(personBySlugQuery, { slug }).catch(() => null)
   const bioText = portableTextToPlain(person?.bio)
   const description =
@@ -61,8 +61,8 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   })
 }
 
-export default async function PersonDetail({ params }: { params: { slug: string } }) {
-  const { slug } = params
+export default async function PersonDetail({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params
   const person = await client.fetch(personBySlugQuery, { slug }).catch(() => null)
 
   if (!person) return notFound()
