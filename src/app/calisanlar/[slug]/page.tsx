@@ -4,7 +4,20 @@ import { absUrl, buildMetadata } from "@/lib/seo"
 import { PortableText } from "@portabletext/react"
 import { notFound } from "next/navigation"
 import Link from "next/link"
-import type { PortableTextBlock } from "sanity"
+
+type PortableTextChild = {
+  _key: string
+  _type: string
+  text?: string
+  [key: string]: unknown
+}
+
+type PortableTextBlock = {
+  _key: string
+  _type: string
+  children?: PortableTextChild[]
+  [key: string]: unknown
+}
 
 export const revalidate = 60
 

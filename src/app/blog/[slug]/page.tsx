@@ -2,11 +2,24 @@ import { client } from '@/lib/sanity.client'
 import { postBySlugQuery } from '@/lib/queries'
 import { absUrl, buildMetadata } from '@/lib/seo'
 import { PortableText } from '@portabletext/react'
-import type { PortableTextBlock } from 'sanity'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
 import type { Metadata } from 'next'
+
+type PortableTextChild = {
+  _key: string
+  _type: string
+  text?: string
+  [key: string]: unknown
+}
+
+type PortableTextBlock = {
+  _key: string
+  _type: string
+  children?: PortableTextChild[]
+  [key: string]: unknown
+}
 
 type RelatedPost = {
   title?: string
