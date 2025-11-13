@@ -1,5 +1,5 @@
 // src/lib/queries.ts
-import { groq } from 'next-sanity'
+import groq from 'groq'
 
 // Type definitions
 export interface SiteSettings {

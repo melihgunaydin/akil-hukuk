@@ -18,7 +18,6 @@ import { absUrl, buildMetadata } from '@/lib/seo'
 
 
 
-export const revalidate = 60;
 export const metadata: Metadata = buildMetadata({
   // boş bırakırsan lib/seo.ts'taki varsayılanlar devrede
 })
@@ -58,6 +57,8 @@ const createMenuItems = (menu: any[]): FooterItem[] =>
 
 const sanitizePhoneForHref = (phone?: string) =>
   phone ? phone.replace(/[^+\d]/g, '') : undefined
+
+export const revalidate = 60
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const [menu, siteSettings, brandingSettings, contactPage, homepageSections] = await Promise.all([
@@ -114,35 +115,40 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       : undefined,
   ].filter((item): item is FooterItem => Boolean(item?.text));
 
-  const footerContentFromSanity: FooterRenderableSection[] = footerSectionsRaw
-    .map((section) => {
-      switch (section.sectionType) {
-        case 'info':
-          if (!section.title && !section.description) return null
-          return {
-            type: 'info' as const,
-            title: section.title,
-            description: section.description ?? '',
-          }
-        case 'menu':
-          if (menuItems.length === 0) return null
-          return {
-            type: 'menu' as const,
-            title: section.title ?? 'Bağlantılar',
-            items: menuItems,
-          }
-        case 'contact':
-          if (contactItems.length === 0) return null
-          return {
-            type: 'contact' as const,
-            title: section.title ?? 'İletişim',
-            items: contactItems,
-          }
-        default:
-          return null
-      }
-    })
-    .filter((section): section is FooterRenderableSection => Boolean(section));
+  const footerContentFromSanity = footerSectionsRaw.flatMap<FooterRenderableSection>((section) => {
+    let result: FooterRenderableSection | null = null
+
+    switch (section.sectionType) {
+      case 'info':
+        if (!section.title && !section.description) break
+        result = {
+          type: 'info',
+          title: section.title,
+          description: section.description ?? '',
+        }
+        break
+      case 'menu':
+        if (menuItems.length === 0) break
+        result = {
+          type: 'menu',
+          title: section.title ?? 'Bağlantılar',
+          items: menuItems,
+        }
+        break
+      case 'contact':
+        if (contactItems.length === 0) break
+        result = {
+          type: 'contact',
+          title: section.title ?? 'İletişim',
+          items: contactItems,
+        }
+        break
+      default:
+        break
+    }
+
+    return result ? [result] : []
+  });
 
   const fallbackFooterContent: FooterRenderableSection[] = [
     {
@@ -232,7 +238,10 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   const defaultLogo = headerLogoUrl ?? absUrl('/logo.svg')
   const addressLines =
     typeof contactSource.address === 'string'
-      ? contactSource.address.split('\n').map((line) => line.trim()).filter(Boolean)
+    ? contactSource.address
+        .split('\n')
+        .map((line: string) => line.trim())
+        .filter(Boolean)
       : []
   const [streetAddress, ...restAddress] = addressLines
   const organizationJsonLd = {

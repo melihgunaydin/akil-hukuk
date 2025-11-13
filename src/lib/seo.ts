@@ -58,6 +58,7 @@ export function buildMetadata(input: SeoInput): Metadata {
   const keywords =
     typeof keywordsRaw === "string" ? keywordsRaw.split(",").map((kw) => kw.trim()).filter(Boolean) : keywordsRaw
   const ogType = input.ogType ?? "website"
+  const resolvedOgType = ogType === "legalService" ? "website" : ogType
   const authorsRaw = input.authors
   const authors =
     typeof authorsRaw === "string"
@@ -78,7 +79,7 @@ export function buildMetadata(input: SeoInput): Metadata {
       },
     },
     openGraph: {
-      type: ogType,
+      type: resolvedOgType,
       siteName: SITE_NAME,
       title,
       description,
@@ -114,15 +115,13 @@ export function buildMetadata(input: SeoInput): Metadata {
   const publishedTime = toIsoDate(input.publishedTime)
   const modifiedTime = toIsoDate(input.modifiedTime ?? input.publishedTime)
 
-  if (ogType === "article") {
+  if (resolvedOgType === "article") {
     metadata.openGraph = {
       ...metadata.openGraph,
       type: "article",
-      article: {
-        ...(publishedTime ? { publishedTime } : {}),
-        ...(modifiedTime ? { modifiedTime } : {}),
-        ...(authors && authors.length > 0 ? { authors } : {}),
-      },
+      ...(publishedTime ? { publishedTime } : {}),
+      ...(modifiedTime ? { modifiedTime } : {}),
+      ...(authors && authors.length > 0 ? { authors } : {}),
     }
   }
 
